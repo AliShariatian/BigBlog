@@ -45,3 +45,4 @@ next-env.d.ts
 
 # resr
 *.rest
+server/requests.rest
