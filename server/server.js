@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
+import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 // import schema
@@ -28,10 +29,25 @@ mongoose.connect(process.env.DATABASE_URL, { autoIndex: true });
 
 // ///////////////////////////////////////////////////////////////////
 
+// format data for send to frontend
+const formatDataToSend = (user) => {
+   const access_token = jwt.sign({ id: user._id }, process.env.SECRET_ACCESS_KEY);
+
+   return {
+      access_token,
+      username: user.personal_info.username,
+      fullName: user.personal_info.fullName,
+      profile_img: user.personal_info.profile_img,
+   };
+};
+
+// ///////////////////////////////////////////////////////////////////
+
 // create username from email value
 const generateUsername = async (email) => {
    let username = email.split("@")[0];
 
+   // user1 => ali@gmail.com -> username: ali  /  user2 => ali@yahoo.com -> username: ali
    // check username unique or not unique; this return true or false value
    const isUsernameExists = await User.exists({ "personal_info.username": username }).then((result) => result);
 
@@ -39,17 +55,6 @@ const generateUsername = async (email) => {
    isUsernameExists ? (username += nanoid().substring(0, 5)) : "";
 
    return username;
-};
-
-// ///////////////////////////////////////////////////////////////////
-
-// format data for send to frontend
-const formatDataToSend = (user) => {
-   return {
-      username: user.personal_info.username,
-      fullName: user.personal_info.fullName,
-      profile_img: user.personal_info.profile_img,
-   };
 };
 
 // ///////////////////////////////////////////////////////////////////
