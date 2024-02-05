@@ -46,3 +46,6 @@ next-env.d.ts
 # resr
 *.rest
 server/requests.rest
+
+# google firebase
+big-blog-firebase-adminsdk.json

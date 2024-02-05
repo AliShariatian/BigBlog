@@ -1,10 +1,15 @@
-import express from "express";
+import express, { json } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
+
+// for auth with google
+import admin from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import serviceAccountKey from "./big-blog-firebase-adminsdk.json" assert { type: "json" };
 
 // import schema
 import User from "./Schema/User.js";
@@ -28,6 +33,11 @@ server.use(cors());
 
 // connection to database
 mongoose.connect(process.env.DATABASE_URL, { autoIndex: true });
+
+// for auth with google
+admin.initializeApp({
+   credential: admin.credential.cert(serviceAccountKey),
+});
 
 // ///////////////////////////////////////////////////////////////////
 
@@ -68,7 +78,7 @@ server.post("/signup", (req, res) => {
    // validating the data that get from frontend
 
    // fullname check
-   if (fullName.length < FULLNAME_LENGTH) {
+   if (!(typeof fullName == "undefined") && fullName.length < FULLNAME_LENGTH) {
       return res.status(403).json({ error: `FullName must be at least ${FULLNAME_LENGTH} letters long` });
    }
 
@@ -125,21 +135,82 @@ server.post("/signin", (req, res) => {
             return res.status(403).json({ error: "Email not found" });
          }
 
-         bcrypt.compare(password, user.personal_info.password, (err, result) => {
-            if (err) {
-               return res.status(403).json({ error: "Error occurred while login, please try again" });
-            }
+         // if user not login with google
+         if (!user.google_auth) {
+            bcrypt.compare(password, user.personal_info.password, (err, result) => {
+               if (err) {
+                  return res.status(403).json({ error: "Error occurred while login!, please try again" });
+               }
 
-            // if password is incorrect
-            if (!result) {
-               return res.status(403).json({ error: "Incorrect password" });
-            } else {
-               return res.status(200).json(formatDataToSend(user));
-            }
-         });
+               // if password is incorrect
+               if (!result) {
+                  return res.status(403).json({ error: "Incorrect password" });
+               } else {
+                  return res.status(200).json(formatDataToSend(user));
+               }
+            });
+         } else {
+            return res.status(403).json({ error: "Account was created using google! try logging in with google." });
+         }
       })
       .catch((err) => {
          return res.status(500).json({ error: err.message });
+      });
+});
+
+// ///////////////////////////////////////////////////////////////////
+
+// for auth with google
+server.post("/google-auth", async (req, res) => {
+   const { access_token } = req.body;
+
+   getAuth()
+      .verifyIdToken(access_token)
+      .then(async (decodedUser) => {
+         let { email, name, picture } = decodedUser;
+
+         // change picture resolution
+         picture = picture.replace("s96-c", "s384-c");
+
+         let user = await User.findOne({
+            "personal_info.email": email,
+         })
+            .select("personal_info.fullName personal_info.username personal_info.profile_img google_auth")
+            .then((u) => {
+               return u || null;
+            })
+            .catch((err) => {
+               return res.status(500).json({ error: err.message });
+            });
+
+         if (user) {
+            // signin
+            if (!user.google_auth) {
+               return res.status(403).json({ error: "This email was signed up without google. Please login with password to access the account." });
+            }
+         } else {
+            // signup
+            const username = await generateUsername(email);
+
+            user = new User({
+               personal_info: { fullName: name, email, username, profile_img: picture, google_auth: true },
+            });
+
+            // save user to database
+            await user
+               .save()
+               .then((u) => {
+                  user = u;
+               })
+               .catch((err) => {
+                  return res.status(500).json({ error: err.message });
+               });
+         }
+
+         return res.status(200).json(formatDataToSend(user));
+      })
+      .catch((err) => {
+         return res.status(500).json({ error: "Failed to authenticate you with google! Try another way." });
       });
 });
 
