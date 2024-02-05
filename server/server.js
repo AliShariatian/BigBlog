@@ -59,7 +59,7 @@ const generateUsername = async (email) => {
 
 // ///////////////////////////////////////////////////////////////////
 
-// sign-up handling
+// SIGN-UP handling
 server.post("/signup", (req, res) => {
    const { fullName, email, password } = req.body;
 
@@ -108,6 +108,37 @@ server.post("/signup", (req, res) => {
             return res.status(500).json({ error: err.message });
          });
    });
+});
+
+// ///////////////////////////////////////////////////////////////////
+
+// SIGN-IN handling
+server.post("/signin", (req, res) => {
+   const { email, password } = req.body;
+
+   User.findOne({ "personal_info.email": email })
+      .then((user) => {
+         // if user email not exist
+         if (!user) {
+            return res.status(403).json({ error: "Email not found" });
+         }
+
+         bcrypt.compare(password, user.personal_info.password, (err, result) => {
+            if (err) {
+               return res.status(403).json({ error: "Error occurred while login, please try again" });
+            }
+
+            // if password is incorrect
+            if (!result) {
+               return res.status(403).json({ error: "Incorrect password" });
+            } else {
+               return res.status(200).json(formatDataToSend(user));
+            }
+         });
+      })
+      .catch((err) => {
+         return res.status(500).json({ error: err.message });
+      });
 });
 
 // ///////////////////////////////////////////////////////////////////
