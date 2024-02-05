@@ -1,5 +1,8 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import axios from "../axios/userAuth";
+import { storeInSession } from "../common/session";
+import { UserContext } from "../App";
+import { Navigate } from "react-router-dom";
 
 // components import
 import { Link } from "react-router-dom";
@@ -17,12 +20,20 @@ const UserAuthForm = ({ type }) => {
    // NOTE: if when use authFormRef return error, can use id value and add to form element and put into FormData(idName).
    const authFormRef = useRef();
 
+   const {
+      userAuth: { access_token },
+      setUserAuth,
+   } = useContext(UserContext);
+
    // connect to server fo form validation and send data to database
    const userAuthThroughServer = (serverRoute, formData) => {
       axios
          .post(serverRoute, formData)
          .then(({ data }) => {
-            console.log(data);
+            storeInSession("user", JSON.stringify(data));
+            setUserAuth(data);
+
+            toast.success(`${type === "sign-in" ? "You Signed in" : "Signup success"}`);
          })
          .catch(({ response }) => {
             toast.error(response.data.error);
@@ -65,7 +76,10 @@ const UserAuthForm = ({ type }) => {
       userAuthThroughServer(serverRoute, formData);
    };
 
-   return (
+   return access_token ? (
+      // if user logged-in, navigate to home
+      <Navigate to="/" />
+   ) : (
       <AnimationWrapper keyValue={type} className="overflow-y-auto">
          <section className="h-cover flex items-center justify-center">
             <form ref={authFormRef} className="w-[80%] max-w-[400px]">
