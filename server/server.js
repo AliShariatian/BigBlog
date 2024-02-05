@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 import "dotenv/config";
 
 // import schema
@@ -23,6 +24,7 @@ const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
 const server = express();
 server.use(express.json());
+server.use(cors());
 
 // connection to database
 mongoose.connect(process.env.DATABASE_URL, { autoIndex: true });

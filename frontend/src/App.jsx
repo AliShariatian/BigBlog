@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // components import
 import Navbar from "./components/Navbar";
 
+import { Toaster } from "react-hot-toast";
+
 // pages import
 import UserAuthForm from "./pages/userAuthForm";
 
@@ -11,6 +13,7 @@ const App = () => {
       <Router>
          {/* header */}
          <Navbar />
+         <Toaster />
 
          <Routes>
             <Route path="/" element={<h1>Home</h1>} />
