@@ -79,6 +79,7 @@ const UserAuthForm = ({ type }) => {
       userAuthThroughServer(serverRoute, formData);
    };
 
+   // TODO: add github auth handler
    // auth with github
    const githubAuthHandler = (ev) => {
       ev.preventDefault();
@@ -125,36 +126,35 @@ const UserAuthForm = ({ type }) => {
                </button>
 
                {/* separator */}
-               <div className="relative w-full flex items-center gap-2 my-12 opacity-20 text-black font-bold">
+               <div className="relative w-full flex items-center gap-2 my-9 opacity-20 text-black font-bold">
                   <hr className="w-1/2 border-black" />
                   OR
                   <hr className="w-1/2 border-black" />
                </div>
 
                {/* continue with social */}
-
-               <div className="flex flex-col md:flex-row gap-2 w-full">
-                  <button onClick={googleAuthHandler} className="btn-dark text-base bg-black/90 hover:bg-black flex items-center justify-center gap-4 md:gap-2 w-11/12 md:w-1/2 center">
-                     <img src={googleIcon} alt="login with google" className="size-6 md:size-5" />
-                     <span className="text-grey normal-case">Continue with google</span>
+               <div>
+                  <button onClick={googleAuthHandler} className="btn-light hover:bg-black/10 border-1 flex items-center justify-center gap-4 w-11/12  center">
+                     <img src={googleIcon} alt="login with google" className="size-6" />
+                     <span className="normal-case">Continue with google</span>
                   </button>
 
-                  <button onClick={githubAuthHandler} className="btn-dark text-base bg-black/90 hover:bg-black flex items-center justify-center gap-4 md:gap-2 w-11/12 md:w-1/2 center">
-                     <img src={githubIcon} alt="login with github" className="size-7 md:size-6 invert" />
-                     <span className="text-grey normal-case">Continue with github</span>
+                  <button onClick={githubAuthHandler} className="btn-light border-1 hover:bg-black/10 mt-3 flex items-center justify-center gap-4 w-11/12 center">
+                     <img src={githubIcon} alt="login with github" className="size-7" />
+                     <span className="normal-case">Continue with github</span>
                   </button>
                </div>
 
                {/* link to sign-in or sign-up page */}
                {type === "sign-in" ? (
-                  <p className="mt-6 text-dark-grey text-xl text-center">
+                  <p className="mt-6 text-dark-gray text-xl text-center">
                      Don't have an account?{" "}
                      <Link to="/signup" className="underline text-black ml-1 text-xl">
                         Join us today.
                      </Link>
                   </p>
                ) : (
-                  <p className="mt-6 text-dark-grey text-xl text-center">
+                  <p className="mt-6 text-dark-gray text-xl text-center">
                      Already a member?{" "}
                      <Link to="/signin" className="underline text-black ml-1 text-xl">
                         Sign in here.

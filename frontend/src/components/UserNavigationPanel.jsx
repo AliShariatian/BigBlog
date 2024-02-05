@@ -42,7 +42,7 @@ const UserNavigationPanel = () => {
 
             <button onClick={userSignOutHandler} className="flex flex-col p-4 pl-8 text-left hover:bg-grey w-full">
                <span className="font-bold text-xl mb-1">Sign Out</span>
-               <span className="text-dark-grey">@{username}</span>
+               <span className="text-dark-gray">@{username}</span>
             </button>
          </div>
       </AnimationWrapper>
