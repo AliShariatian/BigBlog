@@ -22,8 +22,11 @@ const App = () => {
       <Router>
          <UserContext.Provider value={{ userAuth, setUserAuth }}>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             {/* header */}
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             <Toaster />
@@ -34,7 +37,10 @@ const App = () => {
                   <Route path="/signup" element={<UserAuthForm type="sign-up" />} />
                </Route>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             </Routes>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
