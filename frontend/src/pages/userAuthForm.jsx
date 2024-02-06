@@ -36,10 +36,10 @@ const UserAuthForm = ({ type }) => {
             storeInSession("user", JSON.stringify(data));
             setUserAuth(data);
 
-            toast.success(`${type === "sign-in" ? "You Signed in" : "Signup success"}`);
+            return toast.success(`${type === "sign-in" ? "You Signed in" : "Signup success"}`);
          })
          .catch(({ response }) => {
-            toast.error(response.data.error);
+            return toast.error(response.data.error);
          });
    };
 
@@ -83,6 +83,7 @@ const UserAuthForm = ({ type }) => {
    // auth with github
    const githubAuthHandler = (ev) => {
       ev.preventDefault();
+      return toast.error("It's not possible at this moment!");
    };
 
    // auth with google
