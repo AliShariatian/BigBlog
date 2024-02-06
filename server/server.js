@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import aws from "aws-sdk";
 import "dotenv/config";
 
 // for auth with google
@@ -38,6 +39,26 @@ mongoose.connect(process.env.DATABASE_URL, { autoIndex: true });
 admin.initializeApp({
    credential: admin.credential.cert(serviceAccountKey),
 });
+
+// liara aws connection
+const s3 = new aws.S3({
+   region: "default",
+   // endpoint: process.env.LIARA_ENDPOINT,
+   accessKeyId: process.env.LIARA_ACCESS_KEY,
+   secretAccessKey: process.env.LIARA_SECRET_KEY,
+});
+
+const generateUploadUrl = async () => {
+   const date = new Date();
+   const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
+
+   return await s3.getSignedUrlPromise("putObject", {
+      Bucket: process.env.LIARA_BUCKET_NAME,
+      Key: imageName,
+      Expires: 1000,
+      ContentType: "image/jpeg",
+   });
+};
 
 // ///////////////////////////////////////////////////////////////////
 
@@ -211,6 +232,20 @@ server.post("/google-auth", async (req, res) => {
       })
       .catch((err) => {
          return res.status(500).json({ error: "Failed to authenticate you with google! Try another way." });
+      });
+});
+
+// ///////////////////////////////////////////////////////////////////
+
+// UPLOAD image url
+server.get("/get-upload-url", (req, res) => {
+   generateUploadUrl()
+      .then((url) => {
+         return res.status(200).json({ uploadUrl: url });
+      })
+      .catch((err) => {
+         console.log(err.message);
+         return res.status(500).json({ error: err.message });
       });
 });
 

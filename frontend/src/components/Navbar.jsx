@@ -3,8 +3,8 @@ import { UserContext } from "../App";
 
 // components import
 import { Link } from "react-router-dom";
-import logo from "../imgs/logo.png";
 import UserNavigationPanel from "./UserNavigationPanel";
+import Logo from "./Logo";
 
 const Navbar = () => {
    const {
@@ -18,7 +18,7 @@ const Navbar = () => {
    const userNavPanelClickHandler = () => {
       setUserNavigationPanelVisibility(!userNavigationPanelVisibility);
    };
-   
+
    const userNavPanelBlurHandler = () => {
       setTimeout(() => {
          setUserNavigationPanelVisibility(false);
@@ -27,10 +27,7 @@ const Navbar = () => {
 
    return (
       <nav className="navbar">
-         {/* logo */}
-         <Link to="/" className="flex-none size-11">
-            <img src={logo} alt="logo" className="size-full" />
-         </Link>
+         <Logo />
 
          {/* search bar */}
          <div
