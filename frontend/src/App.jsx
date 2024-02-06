@@ -23,8 +23,11 @@ const App = () => {
          <UserContext.Provider value={{ userAuth, setUserAuth }}>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             {/* header */}
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -38,7 +41,10 @@ const App = () => {
                </Route>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             </Routes>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
