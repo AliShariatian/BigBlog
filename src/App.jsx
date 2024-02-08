@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
+import { lookInSession } from "./common/session";
 // components import
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 // pages import
 import UserAuthForm from "./pages/userAuthForm";
-import { lookInSession } from "./common/session";
+import Editor from "./pages/editor";
 
 export const UserContext = createContext({});
 
@@ -20,17 +21,16 @@ const App = () => {
    return (
       <Router>
          <UserContext.Provider value={{ userAuth, setUserAuth }}>
-            {/* header */}
-            <Navbar />
             <Toaster />
 
             <Routes>
-               <Route path="/" element={<h1>Home</h1>} />
-               <Route path="/signin" element={<UserAuthForm type="sign-in" />} />
-               <Route path="/signup" element={<UserAuthForm type="sign-up" />} />
-            </Routes>
+               <Route path="/" element={<Navbar />}>
+                  <Route path="/signin" element={<UserAuthForm type="sign-in" />} />
+                  <Route path="/signup" element={<UserAuthForm type="sign-up" />} />
+               </Route>
 
-            {/* footer */}
+               <Route path="/editor" element={<Editor />} />
+            </Routes>
          </UserContext.Provider>
       </Router>
    );
