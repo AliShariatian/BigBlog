@@ -1,18 +1,10 @@
-import { useContext } from "react";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { Link } from "react-router-dom";
-import { UserContext } from "../App";
-import { removeFromSession } from "../common/session";
+import { toast } from "react-hot-toast";
 
 const UserNavigationPanel = () => {
-   const {
-      userAuth: { username },
-      setUserAuth,
-   } = useContext(UserContext);
-
    const userSignOutHandler = () => {
-      removeFromSession("user");
-      setUserAuth({ access_token: null });
+      return toast.error("You signed out");
    };
 
    return (
@@ -42,7 +34,7 @@ const UserNavigationPanel = () => {
 
             <button onClick={userSignOutHandler} className="flex flex-col p-4 pl-8 text-left hover:bg-grey w-full">
                <span className="font-bold text-xl mb-1">Sign Out</span>
-               <span className="text-dark-gray">@{username}</span>
+               <span className="text-dark-gray">@{'username'}</span>
             </button>
          </div>
       </AnimationWrapper>
