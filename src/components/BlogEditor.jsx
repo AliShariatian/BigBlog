@@ -73,11 +73,11 @@ const BlogEditor = () => {
 
    const publishEventHandler = () => {
       if (!banner.length) {
-         toast.error("Upload blog banner to publish it.");
+         return toast.error("Upload blog banner to publish it.");
       }
 
       if (!title.length) {
-         toast.error("Write blog title to publish it.");
+         return toast.error("Write blog title to publish it.");
       }
 
       if (textEditor.isReady) {
@@ -99,7 +99,7 @@ const BlogEditor = () => {
 
    return (
       <>
-         <nav className="navbar">
+         <nav className="navbar z-30">
             <Logo />
 
             <p className="max-md:hidden text-black line-clamp-1 w-full">{title.length ? title : "New Blog"}</p>
@@ -121,7 +121,7 @@ const BlogEditor = () => {
                         <i
                            onClick={() => setBlog({ ...blog, banner: "" })}
                            title="Remove banner"
-                           class="fi fi-rr-cross-small bg-gray-100/90 hover:bg-gray-50 peer/bannerOpacity absolute left-5 top-3 text-xl size-6 hover:shadow-md flex items-center justify-center text-black rounded-full cursor-pointer z-50"
+                           class="fi fi-rr-cross-small bg-gray-100/90 hover:bg-gray-50 peer/bannerOpacity absolute left-5 top-3 text-xl size-6 hover:shadow-md flex items-center justify-center text-black rounded-full cursor-pointer z-20"
                         ></i>
                      )}
                      <div className="relative aspect-video bg-white border-4 border-dashed rounded border-grey peer-hover/bannerOpacity:opacity-100 hover:opacity-70">
