@@ -1,16 +1,37 @@
-import { useRef } from "react";
+import EditorJS from "@editorjs/editorjs";
+import { useContext, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import AnimationWrapper from "../common/AnimationWrapper";
-import axios from "../axios/imageUpload";
+import { EditorContext } from "../pages/editor";
 import Logo from "./Logo";
-import { s3UploadAction } from "../common/liara";
+import { tools } from "./Tools";
 
-const BANNER_IMG_MAX_FILE_SIZE_LIMIT = 5_000_000; // 5Mb
+const BANNER_IMG_MAX_FILE_SIZE_LIMIT = 5_000_000; // ~5Mb
 
 const BlogEditor = () => {
-   const blogBannerImgRef = useRef(null);
+   const {
+      blog,
+      blog: { title, banner, description, tags, content },
+      setBlog,
+      textEditor,
+      setTextEditor,
+      setEditorState,
+   } = useContext(EditorContext);
 
-   const uploadBannerHandler = async (ev) => {
+   useEffect(() => {
+      if (!textEditor.isReady) {
+         setTextEditor(
+            new EditorJS({
+               holderId: "textEditor",
+               data: content,
+               tools: tools,
+               placeholder: "Let's write an awesome story",
+            })
+         );
+      }
+   }, []);
+
+   const uploadBannerHandler = (ev) => {
       if (ev.target.files.length > 1) {
          return toast.error("Please select 1 file for banner!");
       }
@@ -21,45 +42,74 @@ const BlogEditor = () => {
          return toast.error("Max banner size limit is 5Mb!");
       }
 
-      // start upload
+      // Loading when banner uploading
+      const loading = toast.loading("Please wait...");
+
+      // Set image to view
       if (IMG_BANNER_FILE) {
+         const imgObjectURL = URL.createObjectURL(IMG_BANNER_FILE);
 
-         const data = new FormData();
-         // data.set('file', e.target.files[0]) as File;
-         data.set('file', IMG_BANNER_FILE);
-         const result = await s3UploadAction(data);
+         setBlog({ ...blog, banner: imgObjectURL });
 
+         toast.dismiss(loading);
+         return toast.success("Upload successfully");
+      }
+   };
 
-console.log(result);
+   const titleKeyDownHandler = (ev) => {
+      // Code 13 for Enter Key in keyboard
+      if (ev.keyCode == 13) {
+         ev.preventDefault();
+      }
+   };
 
-         // const loadingToast = toast.loading("Uploading...");
+   const titleChangeHandler = (ev) => {
+      const { target } = ev;
 
-         // axios
-         //    .post("/upload-img", { body: data })
-         //    .then((data) => {
-         //       if (data) {
-         //          toast.dismiss(loadingToast);
-         //          blogBannerImgRef.current.src = url;
+      // Dynamic text area height
+      target.style.height = "auto"; // For reset when remove text
+      target.style.height = `${target.scrollHeight}px`; // For set text area height
 
-         //          return toast.success("Uploaded");
-         //       }
-         //    })
-         //    .catch((err) => {
-         //       toast.dismiss(loadingToast);
-         //       return toast.error("Upload failed!");
-         //    });
+      setBlog({ ...blog, title: target.value });
+   };
+
+   const publishEventHandler = () => {
+      if (!banner.length) {
+         return toast.error("Upload blog banner to publish it.");
+      }
+
+      if (!title.length) {
+         return toast.error("Write blog title to publish it.");
+      }
+
+      if (textEditor.isReady) {
+         textEditor
+            .save()
+            .then((data) => {
+               if (data.blocks.length) {
+                  setBlog({ ...blog, content: data });
+                  setEditorState("PUBLISH");
+               } else {
+                  return toast.error("Write something in your blog to publish it");
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+            });
       }
    };
 
    return (
       <>
-         <nav className="navbar">
+         <nav className="navbar z-30">
             <Logo />
 
-            <p className="max-md:hidden text-black line-clamp-1 w-full">New Blog</p>
+            <p className="max-md:hidden text-black line-clamp-1 w-full">{title.length ? title : "New Blog"}</p>
 
             <div className="flex gap-4 ml-auto *:py-2">
-               <button className="btn-dark">Publish</button>
+               <button onClick={publishEventHandler} className="btn-dark">
+                  Publish
+               </button>
                <button className="btn-light">Save Draft</button>
             </div>
          </nav>
@@ -68,18 +118,40 @@ console.log(result);
          <AnimationWrapper>
             <section>
                <div className="mx-auto w-full max-w-[900px]">
-                  <div className="relative aspect-video bg-white border-4 border-dashed rounded border-grey hover:opacity-70">
-                     <label htmlFor="uploadBanner" className="">
-                        <div className="size-full">
-                           {blogBannerImgRef.current ? (
-                              <img ref={blogBannerImgRef} src="" alt="blog" className="z-20 object-contain" />
-                           ) : (
-                              <span className="text-4xl text-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">Blog Banner</span>
-                           )}
-                           <input hidden onChange={uploadBannerHandler} type="file" id="uploadBanner" accept=".png, .jpg, .jpeg" />
-                        </div>
-                     </label>
+                  <div className="relative">
+                     {!!banner.length && (
+                        <i
+                           onClick={() => setBlog({ ...blog, banner: "" })}
+                           title="Remove banner"
+                           class="fi fi-rr-cross-small bg-gray-100/90 hover:bg-gray-50 peer/bannerOpacity absolute left-5 top-3 text-xl size-6 hover:shadow-md flex items-center justify-center text-black rounded-full cursor-pointer z-20"
+                        ></i>
+                     )}
+                     <div className="relative aspect-video bg-white border-4 border-dashed rounded border-grey peer-hover/bannerOpacity:opacity-100 hover:opacity-70">
+                        <label htmlFor="uploadBanner">
+                           <div className="size-full">
+                              {banner.length ? (
+                                 <img src={banner} alt="blog banner" title="Click to change banner" className="z-20 object-contain" />
+                              ) : (
+                                 <span title="Click to add banner" className="size-full flex items-center justify-center text-4xl text-gray-300">
+                                    Blog Banner
+                                 </span>
+                              )}
+                              <input hidden onChange={uploadBannerHandler} type="file" id="uploadBanner" accept=".png, .jpg, .jpeg" />
+                           </div>
+                        </label>
+                     </div>
                   </div>
+                  <textarea
+                     defaultValue={title}
+                     onKeyDown={titleKeyDownHandler}
+                     onChange={titleChangeHandler}
+                     placeholder="Blog Title"
+                     className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+                  ></textarea>
+
+                  <hr className="w-full opacity-70 my-5" />
+
+                  <div id="textEditor" className="font-secondary"></div>
                </div>
             </section>
          </AnimationWrapper>
