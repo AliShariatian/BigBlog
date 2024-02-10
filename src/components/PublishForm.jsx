@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { EditorContext } from "../pages/editor";
 import { toast } from "react-hot-toast";
@@ -8,6 +9,8 @@ const DESCRIPTION_CHARACTER_LIMIT = 200;
 const TAG_LENGTH_LIMIT = 10;
 
 const PublishForm = () => {
+   const navigate = useNavigate();
+
    const {
       blog,
       blog: { title, banner, description, tags, content },
@@ -52,6 +55,25 @@ const PublishForm = () => {
       }
    };
 
+   // onClick
+   const publishBlogHandler = () => {
+      if (!title.length) {
+         return toast.error("Write blog title before publish it");
+      }
+
+      if (!description.length) {
+         return toast.error("Write blog description before publish it");
+      }
+
+      if (!tags.length) {
+         return toast.error("Add blog tag before publish it");
+      }
+
+      //TODO: SAVE DATA TO LOCAL_STORAGE
+      navigate("/");
+      return toast.success("Publish successfully");
+   };
+
    return (
       <AnimationWrapper>
          <section className="w-screen min-h-screen grid items-center lg:grid-cols-2 lg:gap-4 py-16">
@@ -65,9 +87,9 @@ const PublishForm = () => {
                   <img src={banner} alt="banner" />
                </div>
 
-               <h1 className="text-4xl font-medium mt-2 leading-tight truncate">{title}</h1>
+               <h1 className="max-w-[450px] lg:max-w-[320px] xl:max-w-[450px] text-4xl min-h-14 font-medium mt-2 leading-tight truncate">{title}</h1>
 
-               <p className="font-secondary min-h-7 line-clamp-2 text-wrap leading-7 mt-4">{description}</p>
+               <p className="max-w-[450px] lg:max-w-[320px] xl:max-w-[450px] font-secondary min-h-7 line-clamp-2 break-words leading-7 mt-4">{description}</p>
             </div>
 
             <div className="border-grey lg:border-1 lg:pl-8">
@@ -97,6 +119,10 @@ const PublishForm = () => {
                   })}
                </div>
                <span className="mt-1 text-dark-gray text-sm text-right block">{`${TAG_LENGTH_LIMIT - tags.length} / ${TAG_LENGTH_LIMIT}  Tags left`}</span>
+
+               <button onClick={publishBlogHandler} className="btn-dark px-8">
+                  Publish
+               </button>
             </div>
          </section>
       </AnimationWrapper>

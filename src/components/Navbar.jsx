@@ -9,15 +9,15 @@ import profile_img from "../imgs/userProfile.jpg";
 const Navbar = () => {
    // open/close UserNavigationPanel handling
    const [showSearchBoxVisibility, setShowSearchBox] = useState(false);
-   const [showNavigationPanel, setShowNavigationPanel] = useState(false);
+   const [showNavPanel, setShowNavPanel] = useState(false);
 
    const userNavPanelClickHandler = () => {
-      setShowNavigationPanel(!showNavigationPanel);
+      setShowNavPanel(!showNavPanel);
    };
 
    const userNavPanelBlurHandler = () => {
       setTimeout(() => {
-         setShowNavigationPanel(false);
+         setShowNavPanel(false);
       }, 99);
    };
 
@@ -61,7 +61,7 @@ const Navbar = () => {
                      </button>
 
                      {/* USER MENU */}
-                     {showNavigationPanel ? <UserNavigationPanel /> : null}
+                     {showNavPanel ? <UserNavigationPanel /> : null}
                   </div>
                </>
 

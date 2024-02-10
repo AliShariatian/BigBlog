@@ -19,14 +19,16 @@ const BlogEditor = () => {
    } = useContext(EditorContext);
 
    useEffect(() => {
-      setTextEditor(
-         new EditorJS({
-            holderId: "textEditor",
-            data: content,
-            tools: tools,
-            placeholder: "Let's write an awesome story",
-         })
-      );
+      if (!textEditor.isReady) {
+         setTextEditor(
+            new EditorJS({
+               holderId: "textEditor",
+               data: content,
+               tools: tools,
+               placeholder: "Let's write an awesome story",
+            })
+         );
+      }
    }, []);
 
    const uploadBannerHandler = (ev) => {
