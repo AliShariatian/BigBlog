@@ -1,8 +1,10 @@
 import { useState } from "react";
 
-// components import
+// COMPONENTS IMPORT
 import { Link, Outlet } from "react-router-dom";
 import UserNavigationPanel from "./UserNavigationPanel";
+
+// IMAGES
 import Logo from "./Logo";
 import profile_img from "../imgs/userProfile.jpg";
 

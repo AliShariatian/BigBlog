@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 // pages import
 import UserAuthForm from "./pages/userAuthForm";
+import HomePage from "./pages/home";
 import Editor from "./pages/editor";
 
 export const UserContext = createContext({});
@@ -25,6 +26,7 @@ const App = () => {
 
             <Routes>
                <Route path="/" element={<Navbar />}>
+                  <Route index element={<HomePage />} />
                   <Route path="/signin" element={<UserAuthForm type="signin" />} />
                   <Route path="/signup" element={<UserAuthForm type="signup" />} />
                </Route>
