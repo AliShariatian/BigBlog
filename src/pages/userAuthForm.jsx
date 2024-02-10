@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components import
 import { Link } from "react-router-dom";
@@ -15,9 +16,10 @@ const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
 const UserAuthForm = ({ type }) => {
+   const navigate = useNavigate();
    const authFormRef = useRef();
 
-   // sign-in / sign-up form submit handler
+   // signin / signup form submit handler
    const submitHandler = (ev) => {
       ev.preventDefault();
 
@@ -48,9 +50,13 @@ const UserAuthForm = ({ type }) => {
          return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters!");
       }
 
-      const route = type === "sign-in" ? "signin" : "signup";
-
-      return toast.success(`You ${route} successfully`);
+      if (type === "signin") {
+         navigate("/");
+         return toast.success(`You signin successfully`);
+      } else {
+         navigate("/signin");
+         return toast.success(`You signup successfully`);
+      }
    };
 
    // auth with github
@@ -69,16 +75,16 @@ const UserAuthForm = ({ type }) => {
       <AnimationWrapper keyValue={type} className="overflow-y-auto">
          <section className="h-cover flex items-center justify-center">
             <form ref={authFormRef} className="w-[80%] max-w-[400px]">
-               <h1 className="text-4xl font-secondary text-center mb-24">{type === "sign-in" ? "Welcome Back" : "Join Us Today"}</h1>
+               <h1 className="text-4xl font-secondary text-center mb-24">{type === "signin" ? "Welcome Back" : "Join Us Today"}</h1>
 
                {/* inputs */}
-               {type === "sign-up" ? <InputBox name="fullName" type="text" placeholder="Full Name" icon="fi-rr-user" /> : null}
+               {type === "signup" ? <InputBox name="fullName" type="text" placeholder="Full Name" icon="fi-rr-user" /> : null}
                <InputBox name="email" type="email" placeholder="Email" icon="fi-rr-envelope" />
                <InputBox name="password" type="password" placeholder="Password" icon="fi-rr-key" />
 
                {/* submit button */}
                <button onClick={submitHandler} type="submit" className="btn-dark center mt-4 px-10">
-                  {type === "sign-in" ? "Sign In" : "Sign Up"}
+                  {type === "signin" ? "Sign In" : "Sign Up"}
                </button>
 
                {/* separator */}
@@ -101,8 +107,8 @@ const UserAuthForm = ({ type }) => {
                   </button>
                </div>
 
-               {/* link to sign-in or sign-up page */}
-               {type === "sign-in" ? (
+               {/* link to signin or signup page */}
+               {type === "signin" ? (
                   <p className="mt-6 text-dark-gray text-center">
                      Don't have an account?{" "}
                      <Link to="/signup" className="underline text-black ml-1">
