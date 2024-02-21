@@ -4,7 +4,7 @@ import { random } from "lodash";
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
 
-const BlogPostCard = ({ title, body, url, index }) => {
+const BlogPostCard = ({ title, description, url, index }) => {
    const date = new Date();
    const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
    const link = title.toLowerCase().replaceAll(" ", "-");
@@ -20,17 +20,17 @@ const BlogPostCard = ({ title, body, url, index }) => {
                   <img src={profile_img} alt="profile image" className="size-6 rounded-full" />
 
                   {/* FULLNAME and USERNAME */}
-                  <span className="line-clamp-1">Full name @{"username"}</span>
+                  <span className="line-clamp-1">Fullname @{"username"}</span>
 
                   {/* PUBLISH TIME */}
-                  <span>{publishedAt}</span>
+                  <span className="min-w-fit">{publishedAt}</span>
                </div>
 
                {/* TITLE */}
                <h1 className="blog-title">{title}</h1>
 
                {/* DESCRIPTION */}
-               <p className="my-3 line-clamp-2 text-xl font-secondary leading-7 max-sm:hidden md:max-[1100px]:hidden">{body}</p>
+               <p className="my-3 line-clamp-2 text-xl font-secondary leading-7 max-sm:hidden md:max-[1100px]:hidden">{description}</p>
 
                <div className="flex gap-4 mt-7">
                   {/* TAG */}
@@ -46,7 +46,7 @@ const BlogPostCard = ({ title, body, url, index }) => {
 
             {/* BLOG IMAGE */}
             <div className="h-28 aspect-square bg-grey">
-               <img src={url} alt="post image" className="size-full aspect-square object-cover" />
+               <img src={url} alt="post image" className="size-full rounded aspect-square object-cover" />
             </div>
          </Link>
       </AnimationWrapper>

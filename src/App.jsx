@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
 import { lookInSession } from "./common/session";
-// components import
+
+// COMPONENTS IMPORT
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
-// pages import
+
+// PAGES IMPORT
 import UserAuthForm from "./pages/userAuthForm";
 import HomePage from "./pages/home";
 import Editor from "./pages/editor";
