@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { random } from "lodash";
 
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
 
-const BlogPostCard = ({ title, description, url, index }) => {
+const BlogPostCard = memo(({ title, description, url, index }) => {
    const date = new Date();
    const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
    const link = title.toLowerCase().replaceAll(" ", "-");
@@ -51,6 +52,6 @@ const BlogPostCard = ({ title, description, url, index }) => {
          </Link>
       </AnimationWrapper>
    );
-};
+});
 
 export default BlogPostCard;

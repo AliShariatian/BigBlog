@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import profile_img from "../imgs/userProfile.jpg";
 
-const NoBannerBlogPostCard = ({ title, index }) => {
+const NoBannerBlogPostCard = memo(({ title, index }) => {
    const date = new Date();
    const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
    const link = title.toLowerCase().replaceAll(" ", "-");
@@ -25,6 +26,6 @@ const NoBannerBlogPostCard = ({ title, index }) => {
          </div>
       </Link>
    );
-};
+});
 
 export default NoBannerBlogPostCard;
