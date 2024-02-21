@@ -10,6 +10,7 @@ import Loader from "../components/Loader";
 // BLOG POST CARD COMPONENTS
 import BlogPostCard from "../components/BlogPostCard";
 import NoBannerBlogPostCard from "../components/NoBannerBlogPostCard";
+import { categories } from "../utils/blogCategories";
 
 const BLOG_POSTS_URL = "https://api.slingacademy.com/v1/sample-data/photos?offset=11&limit=100";
 
@@ -33,7 +34,7 @@ const HomePage = () => {
 
    return (
       <AnimationWrapper>
-         <div className="h-cover flex justify-center gap-10">
+         <div className="h-cover flex justify-center gap-0">
             {/* latest blogs */}
             <section className="w-full">
                <InPageNavigation routes={["home", "trending blogs"]} defaultHidden={["trending blogs"]}>
@@ -43,7 +44,27 @@ const HomePage = () => {
             </section>
 
             {/* filters and trending blogs */}
-            <section></section>
+            <section className="min-w-[40%] lg:min-w-[500px] max-w-min border-l border-grey pl-8 pt-3 max-md:hidden">
+               <div className="flex flex-col gap-10">
+                  <div>
+                     <h3 className="font-medium text-xl mb-8">Stories from all interests</h3>
+                     <div className="flex gap-3 flex-wrap">
+                        {categories.map((category) => (
+                            <button className="tag">{category}</button>
+                        ))}
+                     </div>
+                  </div>
+
+                  <div>
+                     <h2 className="font-medium text-xl mb-8">
+                        Trending
+                        <i className="fi fi-rr-arrow-trend-up"></i>
+                     </h2>
+
+                     {blogs === null ? <Loader /> : blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)}
+                  </div>
+               </div>
+            </section>
          </div>
       </AnimationWrapper>
    );
