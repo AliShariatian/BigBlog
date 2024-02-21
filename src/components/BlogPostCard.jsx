@@ -4,12 +4,13 @@ import { random } from "lodash";
 
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
+import { shortDate } from "../utils/shortDate";
 
-const BlogPostCard = memo(({ title, description, url, index }) => {
-   const date = new Date();
-   const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
+const BlogPostCard = memo(({ title, description, url, tag, date, fullname, index }) => {
+   const publishedAt = shortDate(date);
    const link = title.toLowerCase().replaceAll(" ", "-");
 
+   const username = fullname.replaceAll(" ", "").toLowerCase();
    const like_count = random(0, 50);
 
    return (
@@ -21,10 +22,12 @@ const BlogPostCard = memo(({ title, description, url, index }) => {
                   <img src={profile_img} alt="profile image" className="size-6 rounded-full" />
 
                   {/* FULLNAME and USERNAME */}
-                  <span className="line-clamp-1">Fullname @{"username"}</span>
+                  <span className="line-clamp-1">
+                     {fullname} @{username}
+                  </span>
 
                   {/* PUBLISH TIME */}
-                  <span className="min-w-fit">{publishedAt}</span>
+                  <span className="ml-1 min-w-fit">{publishedAt}</span>
                </div>
 
                {/* TITLE */}
@@ -35,7 +38,7 @@ const BlogPostCard = memo(({ title, description, url, index }) => {
 
                <div className="flex gap-4 mt-7">
                   {/* TAG */}
-                  <span className="btn-light text-base py-1 px-4">Tag</span>
+                  <span className="btn-light text-base py-1 px-4">{tag}</span>
 
                   <span className="ml-3 flex items-center gap-2 text-dark-gray">
                      <i className="fi fi-rr-heart text-xl"></i>

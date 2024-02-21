@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { sample } from "lodash";
 
 // COMPONENTS IMPORT
 import AnimationWrapper from "../common/AnimationWrapper";
@@ -11,7 +12,7 @@ import Loader from "../components/Loader";
 import BlogPostCard from "../components/BlogPostCard";
 import NoBannerBlogPostCard from "../components/NoBannerBlogPostCard";
 
-import { categories } from "../utils/blogCategories";
+import { categories, fullname } from "../utils/blogNewData";
 import { activeTabLineRef, activeTabRef } from "../components/InPageNavigation";
 
 const BLOG_POSTS_URL = "https://api.slingacademy.com/v1/sample-data/photos?offset=11&limit=100";
@@ -25,7 +26,16 @@ const HomePage = () => {
       axios
          .get(BLOG_POSTS_URL)
          .then(({ data }) => {
-            setBlogs(data.photos);
+            // Add tags value to data
+            const newData = data.photos.map((d) => {
+               d.tag = sample(categories);
+               d.fullname = sample(fullname);
+               d.date = new Date(new Date() - Math.random() * 1e12);
+
+               return d;
+            });
+
+            setBlogs(newData);
          })
          .catch(() => {
             toast.error("Failed to get posts!, Please try again");
@@ -71,7 +81,7 @@ const HomePage = () => {
                      <h3 className="font-medium text-xl mb-8">Stories from all interests</h3>
                      <div className="flex gap-3 flex-wrap">
                         {categories.map((category) => (
-                           <button onClick={loadBlogPostByCategory} className={`tag ${pageState === category ? "bg-black text-white" : ""}`}>
+                           <button onClick={loadBlogPostByCategory} key={category} className={`tag ${pageState === category ? "bg-black text-white" : ""}`}>
                               {category}
                            </button>
                         ))}
