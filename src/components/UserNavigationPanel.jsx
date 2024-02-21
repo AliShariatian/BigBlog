@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 const UserNavigationPanel = () => {
    const userSignOutHandler = () => {
-      return toast.error("You signed out");
+      return toast.success("You signed out");
    };
 
    return (

@@ -8,12 +8,13 @@ TopBarProgress.config({
       "1.0": "#242424",
    },
    barThickness: 3,
+   shadowBlur: 0,
 });
 
 const PageLoadingBar = ({ children }) => {
    const [progress, setProgress] = useState(false);
    const [prevLocation, setPrevLocation] = useState("");
-   
+
    const location = useLocation();
 
    useEffect(() => {

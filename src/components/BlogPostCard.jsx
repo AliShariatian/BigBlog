@@ -4,9 +4,7 @@ import { random } from "lodash";
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
 
-const BlogPostCard = ({ blog, index }) => {
-   const { title, body } = blog;
-
+const BlogPostCard = ({ title, body, url, index }) => {
    const date = new Date();
    const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
    const link = title.toLowerCase().replaceAll(" ", "-");
@@ -48,7 +46,7 @@ const BlogPostCard = ({ blog, index }) => {
 
             {/* BLOG IMAGE */}
             <div className="h-28 aspect-square bg-grey">
-               <img src="" alt="post image" className="size-full aspect-square object-cover" />
+               <img src={url} alt="post image" className="size-full aspect-square object-cover" />
             </div>
          </Link>
       </AnimationWrapper>
