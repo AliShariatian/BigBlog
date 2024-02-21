@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { random } from "lodash";
+
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
 
@@ -9,8 +11,7 @@ const BlogPostCard = ({ blog, index }) => {
    const publishedAt = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
    const link = title.toLowerCase().replaceAll(" ", "-");
 
-   // Formula:  Random_Number_Between_0_1 * (Max - Min) + Min
-   const like_count = Math.floor(Math.random() * (10 - 0)) + 0;
+   const like_count = random(0, 50);
 
    return (
       <AnimationWrapper transition={{ duration: 1, delay: index * 0.1 }}>
@@ -39,7 +40,7 @@ const BlogPostCard = ({ blog, index }) => {
 
                   <span className="ml-3 flex items-center gap-2 text-dark-gray">
                      <i className="fi fi-rr-heart text-xl"></i>
-                     {/* TOTAL LIKE COUNT */}
+                     {/* TOTAL SINGLE POST LIKE COUNT */}
                      {like_count}
                   </span>
                </div>

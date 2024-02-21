@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import UserAuthForm from "./pages/userAuthForm";
 import HomePage from "./pages/home";
 import Editor from "./pages/editor";
+import PageLoadingBar from "./components/PageLoadingBar";
 
 export const UserContext = createContext({});
 
@@ -22,6 +23,7 @@ const App = () => {
    return (
       <Router>
          <UserContext.Provider value={{ userAuth, setUserAuth }}>
+            <PageLoadingBar />
             <Toaster />
 
             <Routes>
