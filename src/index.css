@@ -130,3 +130,8 @@
 .cdx-settings-button[data-tune="stretched"] {
    display: none;
 }
+
+input[type="search"]::-webkit-search-cancel-button {
+   filter: contrast(0);
+   cursor: pointer;
+}

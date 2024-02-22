@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // COMPONENTS IMPORT
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import UserNavigationPanel from "./UserNavigationPanel";
 
 // IMAGES
@@ -13,14 +13,28 @@ const Navbar = () => {
    const [showSearchBoxVisibility, setShowSearchBox] = useState(false);
    const [showNavPanel, setShowNavPanel] = useState(false);
 
+   const navigate = useNavigate();
+
+   // onClick
    const userNavPanelClickHandler = () => {
       setShowNavPanel(!showNavPanel);
    };
 
+   // onBlur
    const userNavPanelBlurHandler = () => {
       setTimeout(() => {
          setShowNavPanel(false);
       }, 99);
+   };
+
+   // onKeyDown
+   const searchHandler = (ev) => {
+      const query = ev.target.value.trim();
+
+      // keyCode 13 is Enter key
+      if (ev.keyCode === 13 && query.length) {
+         navigate(`/search/${query}`);
+      }
    };
 
    return (
@@ -34,7 +48,13 @@ const Navbar = () => {
                   showSearchBoxVisibility ? "show" : "hide"
                }`}
             >
-               <input type="text" placeholder="Search" className="w-full md:w-auto bg-grey py-4 pl-6 pr-[12%] md:pr-6 rounded-full placeholder:text-dark-gray md:pl-12" />
+               <input
+                  onKeyDown={searchHandler}
+                  type="search"
+                  maxLength={20}
+                  placeholder="Search"
+                  className="w-full md:w-auto bg-grey py-4 pl-6 pr-[12%] md:pr-6 rounded-full placeholder:text-dark-gray md:pl-12"
+               />
                <i className="fi fi-rr-search absolute right-[10%] md:left-5 top-1/2 -translate-y-1/2 md:pointer-events-none text-xl text-dark-gray"></i>
             </div>
 
