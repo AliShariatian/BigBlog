@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { sample, random } from "lodash";
+import { sample, random, slice } from "lodash";
 
 // COMPONENTS IMPORT
 import AnimationWrapper from "../common/AnimationWrapper";
@@ -13,14 +13,21 @@ import BlogPostCard from "../components/BlogPostCard";
 import NoBannerBlogPostCard from "../components/NoBannerBlogPostCard";
 
 import { categories, fullname } from "../utils/blogNewData";
-import { activeTabLineRef, activeTabRef } from "../components/InPageNavigation";
+import { activeTabRef } from "../components/InPageNavigation";
 import NoDataMessage from "../components/NoDataMessage";
+import LoadMorePostBtn from "../components/LoadMorePostBtn";
 
 const BLOG_POSTS_URL = "https://api.slingacademy.com/v1/sample-data/photos?offset=11&limit=100";
+const BLOGS_COUNT_PER_PAGE = 10;
 
 const HomePage = () => {
    const [blogs, setBlogs] = useState(null);
    const [pageState, setPageState] = useState("home");
+
+   // For load more blogs
+   const [isCompleted, setIsCompleted] = useState(false);
+   const [index, setIndex] = useState(BLOGS_COUNT_PER_PAGE);
+   const slicedBlogs = slice(blogs, 0, index);
 
    // fetch Data
    const fetchBlogPosts = () => {
@@ -49,19 +56,27 @@ const HomePage = () => {
    }, []);
 
    // onClick
+   const showMoreBlogsBtnHandler = () => {
+      setIndex(index + BLOGS_COUNT_PER_PAGE);
+      if (index >= blogs.length) {
+         setIsCompleted(true);
+      } else {
+         setIsCompleted(false);
+      }
+   };
+
+   // onClick
    useEffect(() => {
       activeTabRef.current.click();
    }, [pageState]);
 
    // onClick
-   const loadBlogPostByCategory = (ev) => {
+   const showBlogPostsByCategory = (ev) => {
       const category = ev.target.innerText.toLowerCase();
-
       // if click again on a category, reset it
       if (pageState === category) {
          return setPageState("home");
       }
-
       setPageState(category);
    };
 
@@ -76,17 +91,25 @@ const HomePage = () => {
                      {blogs === null ? (
                         <Loader />
                      ) : blogs.length ? (
-                        blogs
-                           .filter((blog) => {
-                              if (pageState === "home") {
-                                 return blog;
-                              }
-                              return blog.tag === pageState;
-                           })
-                           .map((blog, index) => <BlogPostCard key={blog.id} index={index} {...blog} />)
+                        <>
+                           {slicedBlogs
+                              .filter((blog) => {
+                                 if (pageState === "home") {
+                                    return blog;
+                                 }
+                                 return blog.tag === pageState;
+                              })
+                              .map((blog, index) => (
+                                 <BlogPostCard key={blog.id} index={index} {...blog} />
+                              ))}
+
+                           {isCompleted ? "Posts Finished" : <LoadMorePostBtn onClick={showMoreBlogsBtnHandler} />}
+                        </>
                      ) : (
                         <NoDataMessage message="No blogs published!" />
                      )}
+
+                     {/* Load more posts button */}
                   </>
 
                   {/* Trending blogs in mobile view */}
@@ -109,7 +132,7 @@ const HomePage = () => {
                      <h3 className="font-medium text-xl mb-8">Stories from all interests</h3>
                      <div className="flex gap-3 flex-wrap">
                         {categories.map((category) => (
-                           <button onClick={loadBlogPostByCategory} key={category} className={`tag ${pageState === category ? "bg-black text-white" : ""}`}>
+                           <button onClick={showBlogPostsByCategory} key={category} className={`tag ${pageState === category ? "bg-black text-white" : ""}`}>
                               {category}
                            </button>
                         ))}
