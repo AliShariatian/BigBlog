@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { sample } from "lodash";
+import { sample, random } from "lodash";
 
 // COMPONENTS IMPORT
 import AnimationWrapper from "../common/AnimationWrapper";
@@ -26,16 +26,18 @@ const HomePage = () => {
       axios
          .get(BLOG_POSTS_URL)
          .then(({ data }) => {
-            // Add tags value to data
-            const newData = data.photos.map((d) => {
+
+            // Add custom values to data
+            const customData = data.photos.map((d) => {
                d.tag = sample(categories);
                d.fullname = sample(fullname);
                d.date = new Date(new Date() - Math.random() * 1e12);
+               d.like_count = random(0, 50);
 
                return d;
             });
 
-            setBlogs(newData);
+            setBlogs(customData);
          })
          .catch(() => {
             toast.error("Failed to get posts!, Please try again");
@@ -69,7 +71,20 @@ const HomePage = () => {
             {/* latest blogs */}
             <section className="w-full">
                <InPageNavigation routes={[pageState, "trending blogs"]} defaultHidden={["trending blogs"]}>
-                  <>{blogs === null ? <Loader /> : blogs.map((blog, index) => <BlogPostCard key={blog.id} index={index} {...blog} />)}</>
+                  <>
+                     {blogs === null ? (
+                        <Loader />
+                     ) : (
+                        blogs
+                           .filter((blog) => {
+                              if (pageState === "home") {
+                                 return blog;
+                              }
+                              return blog.tag === pageState;
+                           })
+                           .map((blog, index) => <BlogPostCard key={blog.id} index={index} {...blog} />)
+                     )}
+                  </>
                   <>{blogs === null ? <Loader /> : blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)}</>
                </InPageNavigation>
             </section>

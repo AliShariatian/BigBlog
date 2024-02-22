@@ -1,17 +1,15 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { random } from "lodash";
 
 import AnimationWrapper from "../common/AnimationWrapper";
 import profile_img from "../imgs/userProfile.jpg";
 import { shortDate } from "../utils/shortDate";
 
-const BlogPostCard = memo(({ title, description, url, tag, date, fullname, index }) => {
+const BlogPostCard = memo(({ title, description, url, tag, date, fullname,like_count, index }) => {
    const publishedAt = shortDate(date);
    const link = title.toLowerCase().replaceAll(" ", "-");
 
    const username = fullname.replaceAll(" ", "").toLowerCase();
-   const like_count = random(0, 50);
 
    return (
       <AnimationWrapper transition={{ duration: 1, delay: index * 0.1 }}>
