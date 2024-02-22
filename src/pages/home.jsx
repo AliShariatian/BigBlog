@@ -14,6 +14,7 @@ import NoBannerBlogPostCard from "../components/NoBannerBlogPostCard";
 
 import { categories, fullname } from "../utils/blogNewData";
 import { activeTabLineRef, activeTabRef } from "../components/InPageNavigation";
+import NoDataMessage from "../components/NoDataMessage";
 
 const BLOG_POSTS_URL = "https://api.slingacademy.com/v1/sample-data/photos?offset=11&limit=100";
 
@@ -26,7 +27,6 @@ const HomePage = () => {
       axios
          .get(BLOG_POSTS_URL)
          .then(({ data }) => {
-
             // Add custom values to data
             const customData = data.photos.map((d) => {
                d.tag = sample(categories);
@@ -71,10 +71,11 @@ const HomePage = () => {
             {/* latest blogs */}
             <section className="w-full">
                <InPageNavigation routes={[pageState, "trending blogs"]} defaultHidden={["trending blogs"]}>
+                  {/* All blogs */}
                   <>
                      {blogs === null ? (
                         <Loader />
-                     ) : (
+                     ) : blogs.length ? (
                         blogs
                            .filter((blog) => {
                               if (pageState === "home") {
@@ -83,9 +84,21 @@ const HomePage = () => {
                               return blog.tag === pageState;
                            })
                            .map((blog, index) => <BlogPostCard key={blog.id} index={index} {...blog} />)
+                     ) : (
+                        <NoDataMessage message="No blogs published!" />
                      )}
                   </>
-                  <>{blogs === null ? <Loader /> : blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)}</>
+
+                  {/* Trending blogs in mobile view */}
+                  <>
+                     {blogs === null ? (
+                        <Loader />
+                     ) : blogs.length ? (
+                        blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)
+                     ) : (
+                        <NoDataMessage message="No trending blogs!" />
+                     )}
+                  </>
                </InPageNavigation>
             </section>
 
@@ -109,7 +122,14 @@ const HomePage = () => {
                         <i className="fi fi-rr-arrow-trend-up"></i>
                      </h2>
 
-                     {blogs === null ? <Loader /> : blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)}
+                     {/* Trending blogs in desktop view */}
+                     {blogs === null ? (
+                        <Loader />
+                     ) : blogs.length ? (
+                        blogs.slice(26, 31).map((blog, index) => <NoBannerBlogPostCard key={blog.id} index={index} {...blog} />)
+                     ) : (
+                        <NoDataMessage message="No trending blogs!" />
+                     )}
                   </div>
                </div>
             </section>
