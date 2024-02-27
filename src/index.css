@@ -89,12 +89,12 @@
 
    #textEditor h2,
    h2 {
-      @apply font-primary text-4xl leading-normal font-bold max-md:text-3xl max-md:leading-snug !important;
+      @apply font-primary text-4xl leading-normal font-bold max-md:text-3xl max-md:leading-snug;
    }
 
    #textEditor h3,
    h3 {
-      @apply font-primary text-3xl leading-loose max-md:text-2xl max-md:leading-normal !important;
+      @apply font-primary text-3xl leading-loose max-md:text-2xl max-md:leading-normal;
    }
 
    #textEditor *,
@@ -108,7 +108,7 @@
    }
 
    .tag {
-      @apply p-3 bg-grey rounded-full px-6 capitalize;
+      @apply py-2 px-5 bg-grey rounded-full capitalize;
    }
 
    .blog-title {
@@ -129,4 +129,9 @@
 .cdx-settings-button[data-tune="withBackground"],
 .cdx-settings-button[data-tune="stretched"] {
    display: none;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+   filter: contrast(0);
+   cursor: pointer;
 }

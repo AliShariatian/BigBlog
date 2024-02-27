@@ -23,7 +23,9 @@ const Editor = () => {
    const [textEditor, setTextEditor] = useState(initialState.textEditor);
 
    return (
-      <EditorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor }}>{editorState === "EDITOR" ? <BlogEditor /> : <PublishForm />}</EditorContext.Provider>
+      <EditorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor }}>
+         {editorState === "EDITOR" ? <BlogEditor /> : <PublishForm />}
+      </EditorContext.Provider>
    );
 };
 

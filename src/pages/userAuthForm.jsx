@@ -75,7 +75,7 @@ const UserAuthForm = ({ type }) => {
       <AnimationWrapper keyValue={type} className="overflow-y-auto">
          <section className="h-cover flex items-center justify-center">
             <form ref={authFormRef} className="w-[80%] max-w-[400px]">
-               <h1 className="text-4xl font-secondary text-center mb-24">{type === "signin" ? "Welcome Back" : "Join Us Today"}</h1>
+               <h1 className="mb-24 text-center font-secondary text-4xl">{type === "signin" ? "Welcome Back" : "Join Us Today"}</h1>
 
                {/* inputs */}
                {type === "signup" ? <InputBox name="fullName" type="text" placeholder="Full Name" icon="fi-rr-user" /> : null}
@@ -88,7 +88,7 @@ const UserAuthForm = ({ type }) => {
                </button>
 
                {/* separator */}
-               <div className="relative w-full flex items-center gap-2 my-9 opacity-20 text-black font-bold">
+               <div className="relative my-9 flex w-full items-center gap-2 font-bold text-black opacity-20">
                   <hr className="w-1/2 border-black" />
                   OR
                   <hr className="w-1/2 border-black" />
@@ -96,12 +96,15 @@ const UserAuthForm = ({ type }) => {
 
                {/* continue with social */}
                <div>
-                  <button onClick={googleAuthHandler} className="btn-light hover:bg-black/10 border-1 flex items-center justify-center gap-4 w-11/12  center">
+                  <button onClick={googleAuthHandler} className="btn-light center flex w-11/12 items-center justify-center gap-4 border-1  hover:bg-black/10">
                      <img src={googleIcon} alt="login with google" className="size-6" />
                      <span className="normal-case">Continue with google</span>
                   </button>
 
-                  <button onClick={githubAuthHandler} className="btn-light border-1 hover:bg-black/10 mt-3 flex items-center justify-center gap-4 w-11/12 center">
+                  <button
+                     onClick={githubAuthHandler}
+                     className="btn-light center mt-3 flex w-11/12 items-center justify-center gap-4 border-1 hover:bg-black/10"
+                  >
                      <img src={githubIcon} alt="login with github" className="size-7" />
                      <span className="normal-case">Continue with github</span>
                   </button>
@@ -109,16 +112,16 @@ const UserAuthForm = ({ type }) => {
 
                {/* link to signin or signup page */}
                {type === "signin" ? (
-                  <p className="mt-6 text-dark-gray text-center">
+                  <p className="mt-6 text-center text-dark-gray">
                      Don't have an account?
-                     <Link to="/signup" className="underline text-black ml-1">
+                     <Link to="/signup" className="ml-1 text-black underline">
                         Join us today.
                      </Link>
                   </p>
                ) : (
-                  <p className="mt-6 text-dark-gray text-center">
+                  <p className="mt-6 text-center text-dark-gray">
                      Already a member?
-                     <Link to="/signin" className="underline text-black ml-1">
+                     <Link to="/signin" className="ml-1 text-black underline">
                         Sign in here.
                      </Link>
                   </p>

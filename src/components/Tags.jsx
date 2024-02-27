@@ -19,7 +19,6 @@ const Tags = ({ tag, tagIndex }) => {
 
    // onKeyDown & onBlur
    const tagEditHandler = (ev) => {
-
       // Code 13 for Enter Key in keyboard
       if (ev.keyCode == 13) {
          ev.preventDefault();
@@ -29,7 +28,7 @@ const Tags = ({ tag, tagIndex }) => {
       // onBlur event
       if (ev.type == "blur") {
          ev.preventDefault();
-         
+
          const currentTag = ev.target.innerText;
          if (currentTag == tagPrevValue) {
             return;
@@ -60,12 +59,12 @@ const Tags = ({ tag, tagIndex }) => {
    };
 
    return (
-      <div className="relative py-2 pl-4 pr-10 mt-2 mr-2 shadow bg-white inline-block rounded-full hover:bg-opacity-50">
+      <div className="relative mr-2 mt-2 inline-block rounded-full bg-white py-2 pl-4 pr-10 shadow hover:bg-opacity-50">
          <p onKeyDown={tagEditHandler} onClick={addEditableHandler} onBlur={tagEditHandler} className="outline-none">
             {tag}
          </p>
 
-         <button onClick={tagDeleteHandler} className="rounded-full absolute right-3 top-1/2 -translate-y-1/2">
+         <button onClick={tagDeleteHandler} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full">
             <i className="fi fi-br-cross text-[10px]"></i>
          </button>
       </div>

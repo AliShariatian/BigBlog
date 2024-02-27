@@ -1,13 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
 import { lookInSession } from "./common/session";
-// components import
+
+// COMPONENTS IMPORT
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
-// pages import
+
+// PAGES IMPORT
 import UserAuthForm from "./pages/userAuthForm";
 import HomePage from "./pages/home";
 import Editor from "./pages/editor";
+import SearchPage from "./pages/searchPage";
+import PageLoadingBar from "./components/PageLoadingBar";
+import ProfilePage from "./pages/profile";
+import Page404 from "./pages/404";
 
 export const UserContext = createContext({});
 
@@ -22,13 +28,18 @@ const App = () => {
    return (
       <Router>
          <UserContext.Provider value={{ userAuth, setUserAuth }}>
+            <PageLoadingBar />
             <Toaster />
 
             <Routes>
                <Route path="/" element={<Navbar />}>
                   <Route index element={<HomePage />} />
-                  <Route path="/signin" element={<UserAuthForm type="signin" />} />
-                  <Route path="/signup" element={<UserAuthForm type="signup" />} />
+                  <Route path="signin" element={<UserAuthForm type="signin" />} />
+                  <Route path="signup" element={<UserAuthForm type="signup" />} />
+                  <Route path="search/:query" element={<SearchPage />} />
+                  <Route path="user/:username" element={<ProfilePage />} />
+
+                  <Route path="*" element={<Page404 />} />
                </Route>
 
                <Route path="/editor" element={<Editor />} />

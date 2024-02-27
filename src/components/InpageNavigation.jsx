@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
+export let activeTabLineRef;
+export let activeTabRef;
+
 const InPageNavigation = ({ children, routes, defaultActiveIndex = 0, defaultHidden = [] }) => {
    const [inPageNavIndex, setInPageNavIndex] = useState(defaultActiveIndex);
 
-   const activeTabLineRef = useRef();
-   const activeTabRef = useRef();
+   activeTabLineRef = useRef();
+   activeTabRef = useRef();
 
    // onClick
    const changePageState = (btn, index) => {
@@ -23,23 +26,22 @@ const InPageNavigation = ({ children, routes, defaultActiveIndex = 0, defaultHid
 
    return (
       <>
-         <div className="relative mb-8 bg-white border-b border-grey flex flex-nowrap overflow-x-auto">
+         <div className="relative mb-8 flex flex-nowrap overflow-x-auto border-b border-grey bg-white">
             {routes.map((route, index) => {
                return (
                   <button
                      ref={defaultActiveIndex === index ? activeTabRef : null}
                      onClick={(ev) => changePageState(ev.target, index)}
                      key={index}
-                     className={`py-4 px-5 capitalize ${inPageNavIndex === index ? "text-black" : "text-gray-500"} ${defaultHidden.includes(route) ? "md:hidden" : ""}`}
+                     className={`px-5 py-4 capitalize ${inPageNavIndex === index ? "text-black" : "text-gray-500"} ${defaultHidden.includes(route) ? "md:hidden" : ""}`}
                   >
                      {route}
                   </button>
                );
             })}
 
-            <hr ref={activeTabLineRef} className="absolute border-black border-1 bottom-0 duration-300" />
+            <hr ref={activeTabLineRef} className="absolute bottom-0 border-1 border-black duration-300" />
          </div>
-
 
          {Array.isArray(children) ? children[inPageNavIndex] : children}
       </>
