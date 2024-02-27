@@ -26,7 +26,7 @@ const BlogEditor = () => {
                data: content,
                tools: tools,
                placeholder: "Let's write an awesome story",
-            })
+            }),
          );
       }
    }, []);
@@ -104,9 +104,9 @@ const BlogEditor = () => {
          <nav className="navbar z-30">
             <Logo />
 
-            <p className="max-md:hidden text-black line-clamp-1 w-full">{title.length ? title : "New Blog"}</p>
+            <p className="line-clamp-1 w-full text-black max-md:hidden">{title.length ? title : "New Blog"}</p>
 
-            <div className="flex gap-4 ml-auto *:py-2">
+            <div className="ml-auto flex gap-4 *:py-2">
                <button onClick={publishEventHandler} className="btn-dark">
                   Publish
                </button>
@@ -123,16 +123,16 @@ const BlogEditor = () => {
                         <i
                            onClick={() => setBlog({ ...blog, banner: "" })}
                            title="Remove banner"
-                           class="fi fi-rr-cross-small bg-gray-100/90 hover:bg-gray-50 peer/bannerOpacity absolute left-5 top-3 text-xl size-6 hover:shadow-md flex items-center justify-center text-black rounded-full cursor-pointer z-20"
+                           class="fi fi-rr-cross-small peer/bannerOpacity absolute left-5 top-3 z-20 flex size-6 cursor-pointer items-center justify-center rounded-full bg-gray-100/90 text-xl text-black hover:bg-gray-50 hover:shadow-md"
                         ></i>
                      )}
-                     <div className="relative aspect-video bg-white border-4 border-dashed rounded border-grey peer-hover/bannerOpacity:opacity-100 hover:opacity-70">
+                     <div className="relative aspect-video rounded border-4 border-dashed border-grey bg-white hover:opacity-70 peer-hover/bannerOpacity:opacity-100">
                         <label htmlFor="uploadBanner">
                            <div className="size-full">
                               {banner.length ? (
                                  <img src={banner} alt="blog banner" title="Click to change banner" className="z-20 object-contain" />
                               ) : (
-                                 <span title="Click to add banner" className="size-full flex items-center justify-center text-4xl text-gray-300">
+                                 <span title="Click to add banner" className="flex size-full items-center justify-center text-4xl text-gray-300">
                                     Blog Banner
                                  </span>
                               )}
@@ -146,10 +146,10 @@ const BlogEditor = () => {
                      onKeyDown={titleKeyDownHandler}
                      onChange={titleChangeHandler}
                      placeholder="Blog Title"
-                     className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+                     className="mt-10 h-20 w-full resize-none text-4xl font-medium leading-tight outline-none placeholder:opacity-40"
                   ></textarea>
 
-                  <hr className="w-full opacity-70 my-5" />
+                  <hr className="my-5 w-full opacity-70" />
 
                   <div id="textEditor" className="font-secondary"></div>
                </div>

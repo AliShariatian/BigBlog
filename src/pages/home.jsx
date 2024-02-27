@@ -126,11 +126,11 @@ const HomePage = () => {
             </section>
 
             {/* filters and trending blogs */}
-            <section className="min-w-[40%] lg:min-w-[500px] max-w-min border-l border-grey pl-8 pt-3 max-md:hidden">
+            <section className="min-w-[40%] max-w-min border-l border-grey pl-8 pt-3 max-md:hidden lg:min-w-[500px]">
                <div className="flex flex-col gap-10">
                   <div>
-                     <h3 className="font-medium text-xl mb-8">Stories from all interests</h3>
-                     <div className="flex gap-3 flex-wrap">
+                     <h3 className="mb-8 text-xl font-medium">Stories from all interests</h3>
+                     <div className="flex flex-wrap gap-3">
                         {categories.map((category) => (
                            <button onClick={showBlogPostsByCategory} key={category} className={`tag ${pageState === category ? "bg-black text-white" : ""}`}>
                               {category}
@@ -140,7 +140,7 @@ const HomePage = () => {
                   </div>
 
                   <div>
-                     <h2 className="font-medium text-xl mb-8 flex gap-2 items-end">
+                     <h2 className="mb-8 flex items-end gap-2 text-xl font-medium">
                         Trending
                         <i className="fi fi-rr-arrow-trend-up"></i>
                      </h2>

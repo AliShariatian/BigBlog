@@ -44,7 +44,7 @@ const Navbar = () => {
 
             {/* SEARCH BAR */}
             <div
-               className={`absolute left-0 top-full bg-white w-full mt-0.5 border-b border-grey py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:w-auto md:show ${
+               className={`md:show absolute left-0 top-full mt-0.5 w-full border-b border-grey bg-white px-[5vw] py-4 md:relative md:inset-0 md:block md:w-auto md:border-0 md:p-0 ${
                   showSearchBoxVisibility ? "show" : "hide"
                }`}
             >
@@ -53,33 +53,36 @@ const Navbar = () => {
                   type="search"
                   maxLength={20}
                   placeholder="Search"
-                  className="w-full md:w-auto bg-grey py-4 pl-6 pr-[12%] md:pr-6 rounded-full placeholder:text-dark-gray md:pl-12"
+                  className="w-full rounded-full bg-grey py-4 pl-6 pr-[12%] placeholder:text-dark-gray md:w-auto md:pl-12 md:pr-6"
                />
-               <i className="fi fi-rr-search absolute right-[10%] md:left-5 top-1/2 -translate-y-1/2 md:pointer-events-none text-xl text-dark-gray"></i>
+               <i className="fi fi-rr-search absolute right-[10%] top-1/2 -translate-y-1/2 text-xl text-dark-gray md:pointer-events-none md:left-5"></i>
             </div>
 
             {/* NAVBAR LINKS */}
-            <div className="flex items-center gap-3 md:gap-6 ml-auto">
+            <div className="ml-auto flex items-center gap-3 md:gap-6">
                {/* Search bar icon for open search bar */}
-               <button onClick={() => setShowSearchBox(!showSearchBoxVisibility)} className="md:hidden bg-grey size-12 rounded-full flex items-center justify-center">
+               <button
+                  onClick={() => setShowSearchBox(!showSearchBoxVisibility)}
+                  className="flex size-12 items-center justify-center rounded-full bg-grey md:hidden"
+               >
                   <i className="fi fi-rr-search text-xl"></i>
                </button>
 
-               <Link to="/editor" className="hidden md:flex gap-2 link px-6">
+               <Link to="/editor" className="link hidden gap-2 px-6 md:flex">
                   <i className="fi fi-rr-file-edit"></i>
                   <span>Write</span>
                </Link>
 
                <>
                   <Link to="/dashboard/notification">
-                     <button className="size-12 rounded-full bg-grey hover:bg-black/10 relative">
-                        <i className="fi fi-rr-bell text-2xl block mt-1"></i>
+                     <button className="relative size-12 rounded-full bg-grey hover:bg-black/10">
+                        <i className="fi fi-rr-bell mt-1 block text-2xl"></i>
                      </button>
                   </Link>
 
                   <div onClick={userNavPanelClickHandler} onBlur={userNavPanelBlurHandler} className="relative">
-                     <button className="size-12 mt-1">
-                        <img src={profile_img} alt={"fullName"} className="size-full object-cover rounded-full" />
+                     <button className="mt-1 size-12">
+                        <img src={profile_img} alt={"fullName"} className="size-full rounded-full object-cover" />
                      </button>
 
                      {/* USER MENU */}
@@ -91,7 +94,7 @@ const Navbar = () => {
                   <Link to="/signin" className="btn-dark py-2">
                      Sign In
                   </Link>
-                  <Link to="/signup" className="btn-light py-2 hidden md:block">
+                  <Link to="/signup" className="btn-light hidden py-2 md:block">
                      Sign Up
                   </Link>
                </>

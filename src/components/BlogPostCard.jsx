@@ -12,9 +12,9 @@ const BlogPostCard = memo(({ title, description, url, tag, date, fullname, like_
 
    return (
       <AnimationWrapper transition={{ duration: 1, delay: index * 0.1 }}>
-         <Link to={`/blog/${link}`} title="Read More" className="flex gap-8 items-center border-b border-grey pb-7 mb-7">
+         <Link to={`/blog/${link}`} title="Read More" className="mb-7 flex items-center gap-8 border-b border-grey pb-7">
             <div className="w-full">
-               <div className="flex gap-2 items-center mb-4">
+               <div className="mb-4 flex items-center gap-2">
                   {/* PROFILE IMAGE */}
                   <img src={profile_img} alt="profile image" className="size-6 rounded-full" />
 
@@ -31,11 +31,11 @@ const BlogPostCard = memo(({ title, description, url, tag, date, fullname, like_
                <h1 className="blog-title">{title}</h1>
 
                {/* DESCRIPTION */}
-               <p className="my-3 line-clamp-2 text-xl font-secondary leading-7 max-sm:hidden md:max-[1100px]:hidden">{description}</p>
+               <p className="my-3 line-clamp-2 font-secondary text-xl leading-7 max-sm:hidden md:max-[1100px]:hidden">{description}</p>
 
-               <div className="flex gap-4 mt-7">
+               <div className="mt-7 flex gap-4">
                   {/* TAG */}
-                  <span className="btn-light text-base py-1 px-4">{tag}</span>
+                  <span className="btn-light px-4 py-1 text-base">{tag}</span>
 
                   <span className="ml-3 flex items-center gap-2 text-dark-gray">
                      <i className="fi fi-rr-heart text-xl"></i>
@@ -46,8 +46,8 @@ const BlogPostCard = memo(({ title, description, url, tag, date, fullname, like_
             </div>
 
             {/* BLOG IMAGE */}
-            <div className="h-28 aspect-square bg-grey">
-               <img src={url} alt="post image" className="size-full rounded aspect-square object-cover" />
+            <div className="aspect-square h-28 bg-grey">
+               <img src={url} alt="post image" className="aspect-square size-full rounded object-cover" />
             </div>
          </Link>
       </AnimationWrapper>

@@ -10,11 +10,11 @@ const NoBannerBlogPostCard = memo(({ title, index, date, fullname }) => {
    const username = fullname.replaceAll(" ", "").toLowerCase();
 
    return (
-      <Link to={`/blog/${link}`} title="Read More" className="flex gap-x-5 mb-14">
+      <Link to={`/blog/${link}`} title="Read More" className="mb-14 flex gap-x-5">
          <span className="blog-index">0{index + 1}</span>
 
          <div>
-            <div className="flex gap-2 items-center mb-3">
+            <div className="mb-3 flex items-center gap-2">
                {/* PROFILE IMAGE */}
                <img src={profile_img} alt="profile image" className="size-6 rounded-full" />
                {/* FULLNAME and USERNAME */}

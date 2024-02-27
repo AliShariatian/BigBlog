@@ -1,6 +1,6 @@
 const NoDataMessage = ({ message }) => {
    return (
-      <div className="text-center w-full p-4 rounded-full bg-grey-50 mt-4">
+      <div className="bg-grey-50 mt-4 w-full rounded-full p-4 text-center">
          <p>{message}</p>
       </div>
    );

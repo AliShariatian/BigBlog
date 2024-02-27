@@ -9,32 +9,32 @@ const UserNavigationPanel = () => {
 
    return (
       <AnimationWrapper transition={{ duration: 0.2 }} className="absolute right-0 z-50">
-         <div className="bg-white absolute right-0 border border-grey w-60 duration-200 py-2 rounded-lg shadow *:rounded-none">
-            <Link to="/editor" className="flex gap-3 md:hidden pl-8 py-4 link">
+         <div className="absolute right-0 w-60 rounded-lg border border-grey bg-white py-2 shadow duration-200 *:rounded-none">
+            <Link to="/editor" className="link flex gap-3 py-4 pl-8 md:hidden">
                <i className="fi fi-rr-file-edit"></i>
                <span>Write</span>
             </Link>
 
-            <Link to={`/user/${'username'}`} className="flex gap-3 pl-8 py-4 link">
+            <Link to={`/user/${"username"}`} className="link flex gap-3 py-4 pl-8">
                <i class="fi fi-rr-user"></i>
                <span>Profile</span>
             </Link>
 
-            <Link to="/dashboard/blogs" className="flex gap-3 pl-8 py-4 link">
+            <Link to="/dashboard/blogs" className="link flex gap-3 py-4 pl-8">
                <i class="fi fi-rr-dashboard"></i>
                <span>Dashboard</span>
             </Link>
 
-            <Link to="/settings/edit-profile" className="flex gap-3 pl-8 py-4 link">
+            <Link to="/settings/edit-profile" className="link flex gap-3 py-4 pl-8">
                <i class="fi fi-rr-settings"></i>
                <span>Settings</span>
             </Link>
 
-            <hr className="border-grey my-2" />
+            <hr className="my-2 border-grey" />
 
-            <button onClick={userSignOutHandler} className="flex flex-col p-4 pl-8 text-left hover:bg-grey w-full">
-               <span className="font-bold text-xl mb-1">Sign Out</span>
-               <span className="text-dark-gray">@{'username'}</span>
+            <button onClick={userSignOutHandler} className="flex w-full flex-col p-4 pl-8 text-left hover:bg-grey">
+               <span className="mb-1 text-xl font-bold">Sign Out</span>
+               <span className="text-dark-gray">@{"username"}</span>
             </button>
          </div>
       </AnimationWrapper>
