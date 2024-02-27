@@ -103,13 +103,16 @@ const HomePage = () => {
                                  <BlogPostCard key={blog.id} index={index} {...blog} />
                               ))}
 
-                           {isCompleted ? "Posts Finished" : <LoadMorePostBtn onClick={showMoreBlogsBtnHandler} />}
+                           {/* Load more posts button */}
+                           {isCompleted ? (
+                              <span className="mb-20 mt-10 flex justify-center text-xl">Posts Finished</span>
+                           ) : (
+                              <LoadMorePostBtn onClick={showMoreBlogsBtnHandler} />
+                           )}
                         </>
                      ) : (
                         <NoDataMessage message="No blogs published!" />
                      )}
-
-                     {/* Load more posts button */}
                   </>
 
                   {/* Trending blogs in mobile view */}

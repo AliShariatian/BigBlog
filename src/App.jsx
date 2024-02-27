@@ -12,6 +12,7 @@ import HomePage from "./pages/home";
 import Editor from "./pages/editor";
 import SearchPage from "./pages/searchPage";
 import PageLoadingBar from "./components/PageLoadingBar";
+import ProfilePage from "./pages/profile";
 import Page404 from "./pages/404";
 
 export const UserContext = createContext({});
@@ -36,6 +37,8 @@ const App = () => {
                   <Route path="signin" element={<UserAuthForm type="signin" />} />
                   <Route path="signup" element={<UserAuthForm type="signup" />} />
                   <Route path="search/:query" element={<SearchPage />} />
+                  <Route path="user/:username" element={<ProfilePage />} />
+
                   <Route path="*" element={<Page404 />} />
                </Route>
 
